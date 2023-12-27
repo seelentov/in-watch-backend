@@ -1,15 +1,16 @@
 
 
 const CONFIG = {
-	secretJWT:'LHx3dmMIcdDajOQXhQsHLHcCLHx3dmMIcdDajOQXhQsHLHcCLHx3dmMIcdDajOQXhQsHLHcC',
-	mongooseConnectionString: 'mongodb+srv://admin:admin@in-watch.hnuxn7t.mongodb.net/in-watch',
-	port: '4444',
+	secretJWT: process.env.SECRET_JWT,
+	mongooseConnectionString: process.env.MONGOOSE_CONNECTION_STRING,
+	port: process.env.PORT || '4444',
   cors:{
     origin: process.env.CORS_ORIGIN
   },
   admin:{
-    password: 'root',
-    login: 'root'
+    password: process.env.ADMIN_PASS,
+    login: process.env.ADMIN_LOGIN
+
   }
 }
 
