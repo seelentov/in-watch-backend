@@ -1,8 +1,3 @@
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import CONFIG from '../config/config.js'
-import PATH from '../config/path.config.js'
-import UserModel from '../models/User.js'
 import UserService from '../services/UserService.js'
 class UserController{
   async register(req, res){
@@ -13,7 +8,7 @@ class UserController{
     } catch (err) {
       console.log(err)
       res.status(500).json({
-        message: 'Не удалось зарегистрироваться',
+        message: err.message,
       })
     }
   }
@@ -26,20 +21,21 @@ class UserController{
     } catch (err) {
       console.log(err)
       res.status(500).json({
-        message: 'Неудалось авторизоваться',
+        message: err.message,
       })
     }
   }
   
   async getMe (req, res) {
     try {
+      console.log(req.userId)
       const user = await UserService.getMe(req.userId)
   
       res.json(user)
     } catch (err) {
       console.log(err)
-      return res.status(500).json({
-        message: 'Нет доступа',
+      res.status(500).json({
+        message: err.message,
       })
     }
   }

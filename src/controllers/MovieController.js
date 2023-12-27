@@ -9,7 +9,7 @@ class MovieController{
     } catch (err) {
       console.log(err)
       res.status(500).json({
-        message: 'Не удалось получить фильм',
+        message: err.message,
       })
     }
   }
@@ -22,7 +22,7 @@ class MovieController{
     } catch (err) {
       console.log(err)
       res.status(500).json({
-        message: 'Не удалось получить фильмы',
+        message: err.message,
       })
     }
   }

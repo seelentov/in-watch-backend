@@ -43,7 +43,7 @@ class UserService{
       })
   
       if (!userDoc) {
-        throw new Error('Wrong login or password')
+        throw new Error('Неверный логин или пароль')
       }
   
       const isValidPass = await bcrypt.compare(
@@ -52,7 +52,7 @@ class UserService{
       )
   
       if (!isValidPass) {
-        throw new Error('Wrong login or password')
+        throw new Error('Неверный логин или пароль')
       }
   
       const token = jwt.sign(
@@ -72,7 +72,7 @@ class UserService{
   }
   
   async getMe (userId) {
-
+      
       const userDoc = await UserModel.findById(userId)
   
       if (!userDoc) {
