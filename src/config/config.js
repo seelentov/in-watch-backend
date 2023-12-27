@@ -1,4 +1,21 @@
 
+
+const CONFIG = {
+	secretJWT:'LHx3dmMIcdDajOQXhQsHLHcCLHx3dmMIcdDajOQXhQsHLHcCLHx3dmMIcdDajOQXhQsHLHcC',
+	mongooseConnectionString: 'mongodb+srv://admin:admin@in-watch.hnuxn7t.mongodb.net/in-watch',
+	port: '4444',
+  cors:{
+    origin: process.env.CORS_ORIGIN
+  },
+  admin:{
+    password: 'root',
+    login: 'root'
+  }
+}
+
+export default CONFIG
+/**
+
 import MovieModel from '../models/Movie.js'
 
 export const getOne = async (req, res) => {
@@ -26,7 +43,8 @@ export const getAllbyFilter = async (req, res) => {
     const {
       order,
       orderDir,
-      limit,
+      page,
+      page_limit,
       yearMin,
       yearMax,
       name,
@@ -69,17 +87,30 @@ export const getAllbyFilter = async (req, res) => {
       ...yearMinQuery,
       ...yearMaxQuery,
       ...showInBannerQuery
+    } || null
+
+    const totalEntries = await MovieModel.countDocuments(filter);
+
+    let skip = 0;
+    if (page && page_limit) {
+      skip = (parseInt(page) - 1) * parseInt(page_limit);
     }
 
     const movies = await MovieModel.find(filter)
       .sort(orderFilter)
-      .limit(parseInt(limit))
+      .skip(skip)
+      .limit(parseInt(page_limit));
 
-    res.json(movies)
+    res.json({
+      data: movies,
+      page: page,
+      count: movies.length, // Длина массива данных
+      entries: totalEntries
+    });
   } catch (err) {
     console.log(err)
     res.status(500).json({
       message: 'Не удалось получить фильмы',
     })
   }
-}
+} */
