@@ -20,7 +20,10 @@ export const registerValidation = [
 ]
 
 export const loginValidation = [
-	body('email').isEmail().withMessage('Неверный формат почты'),
+	body('email')
+  .isEmail()
+  .withMessage('Неверный формат почты')
+  ,
 	body('password')
 		.isLength({ min: 6 })
 		.withMessage('Пароль должен быть более 5-ти символов'),

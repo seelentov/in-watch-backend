@@ -7,7 +7,7 @@ class UserController{
       res.json(user)
     } catch (err) {
       console.log(err)
-      res.status(500).json({
+      res.status(err.status).json({
         message: err.message,
       })
     }
@@ -20,7 +20,7 @@ class UserController{
       res.json(user)
     } catch (err) {
       console.log(err)
-      res.status(500).json({
+      res.status(400).json({
         message: err.message,
       })
     }

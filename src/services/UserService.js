@@ -43,7 +43,9 @@ class UserService{
       })
   
       if (!userDoc) {
-        throw new Error('Неверный логин или пароль')
+        const error = new Error('Неверный логин или пароль');
+        error.status = 400; 
+        throw error; 
       }
   
       const isValidPass = await bcrypt.compare(
@@ -52,7 +54,9 @@ class UserService{
       )
   
       if (!isValidPass) {
-        throw new Error('Неверный логин или пароль')
+        const error = new Error('Неверный логин или пароль');
+        error.status = 400; 
+        throw error; 
       }
   
       const token = jwt.sign(
