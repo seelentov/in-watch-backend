@@ -32,6 +32,8 @@ class MovieService{
         showInBanner
       } = query
   
+      
+
       const orderFilter = order? { [order]: orderDir === 'asc' ? 1 : -1, } : {}
       const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {}
       const ageRatingFilter = ageRating ? { ageRating } : {}
@@ -70,11 +72,18 @@ class MovieService{
         skip = (parseInt(page) - 1) * parseInt(page_limit);
       }
   
-      const movies = await MovieModel.find(filter)
+      //const movies = await MovieModel.find(filter)
+      //  .sort(orderFilter)
+      //  .skip(skip)
+      //  .limit(parseInt(page_limit));
+
+           const movies = await MovieModel.find(filter)
         .sort(orderFilter)
         .skip(skip)
         .limit(parseInt(page_limit));
   
+        console.log(movies)
+
       return {
         data: movies,
         page: page,
