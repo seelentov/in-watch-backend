@@ -4,11 +4,11 @@ class UserController{
     try {
       const user = await UserService.register(req.body)
   
-      res.json(user)
+      return res.json(user)
     } catch (err) {
       console.log(err)
-      res.status(err.status).json({
-        message: err.message,
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
       })
     }
   }
@@ -16,56 +16,77 @@ class UserController{
   async login (req, res) {
     try {
       const user = await UserService.login(req.body)
-  
-      res.json(user)
+      return res.json(user)
     } catch (err) {
       console.log(err)
-      res.status(400).json({
-        message: err.message,
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
       })
     }
   }
   
   async getMe (req, res) {
     try {
-      console.log(req.userId)
       const user = await UserService.getMe(req.userId)
   
       res.json(user)
     } catch (err) {
       console.log(err)
-      res.status(500).json({
-        message: err.message,
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
       })
     }
   }
   
   
-  //async update (req, res) {
-  //  try {
-  //    const user = await UserModel.findByIdAndUpdate(req.userId, {
-  //      avatarUrl: req.body.avatarUrl,
-  //      login: req.body.login,
-  //    }, {
-  //      new: true
-  //    })
+  async updateFav (req, res) {
+    try {
+      const userId = req.userId
+      const action = req.query.action
+      const ids = req.body.ids
+
+      const user = await UserService.updateFav(action, ids, userId)
   
-  //    if (!user) {
-  //      return res.status(404).json({
-  //        message: 'Пользователь не найден',
-  //      })
-  //    }
+      res.json(user)
+    } catch (err) {
+      console.log(err)
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
+      })
+    }
+  }
+
+  async updateInfo (req, res) {
+    try {
+      const userId = req.userId
+
+      const user = await UserService.updateInfo(userId, req.body)
   
-  //    const { passwordHash, ...userData } = user._doc
+      res.json(user)
+    } catch (err) {
+      console.log(err)
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
+      })
+    }
+  }
+
+  async changePass (req, res) {
+    try {
+      const userId = req.userId
+
+      await UserService.changePass(userId, req.body)
   
-  //    res.json(userData)
-  //  } catch (err) {
-  //    console.log(err)
-  //    return res.status(500).json({
-  //      message: 'Нет доступа',
-  //    })
-  //  }
-  //}
+      res.status(200).json({
+        success: true,
+      })
+    } catch (err) {
+      console.log(err)
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
+      })
+    }
+  }
 }
 
 export default new UserController()

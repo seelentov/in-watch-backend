@@ -48,7 +48,19 @@ const MovieSchema = new mongoose.Schema(
     },
     showInBanner:{
       type: Boolean
-    }
+    },
+    likes:{
+      type: Number,
+			required: true,
+    },
+    views:{
+      type: Number,
+			required: true,
+    },
+    viewsMonth:{
+      type: Number,
+			required: true,
+    },
 	},
 	{
 		timestamps: true,

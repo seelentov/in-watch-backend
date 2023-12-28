@@ -3,8 +3,9 @@ import MovieService from '../services/MovieService.js'
 class MovieController{
   async getOne(req, res){
     try {
+      const view = req.query.view
       const id = req.params.id
-      const movie = await MovieService.getOne(id)
+      const movie = await MovieService.getOne(id, req.query)
       res.json(movie)
     } catch (err) {
       console.log(err)

@@ -19,7 +19,12 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
-    }
+    },
+    favorites: [String],
+    userSalt:{
+      type: String,
+      required: true,
+    },
 	},
 	{
 		timestamps: true,

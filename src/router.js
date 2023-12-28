@@ -1,4 +1,3 @@
-import AdminController from './controllers/AdminController.js'
 import MovieController from './controllers/MovieController.js'
 import UserController from './controllers/UserController.js'
 
@@ -7,22 +6,44 @@ import handleValidationErrors from './middlewares/handleValidationErrors.js'
 import {
   loginValidation,
   registerValidation,
+  updateInfoValidation,
+  changePassValidation
 } from './validations/user.validation.js'
 
 import Router from 'express'
 
 const router = new Router();
 
+// USER
 router.post('/auth/signup',
 registerValidation,
 handleValidationErrors,
 UserController.register, 
 )
-// USER
+
 router.post('/auth/login',
 loginValidation,
 handleValidationErrors,
 UserController.login,
+)
+
+router.patch('/auth/favorite', 
+checkAuth,
+UserController.updateFav
+)
+
+router.patch('/auth/info',
+updateInfoValidation,
+handleValidationErrors, 
+checkAuth,
+UserController.updateInfo
+)
+
+router.patch('/auth/changepass',
+changePassValidation,
+handleValidationErrors, 
+checkAuth,
+UserController.changePass
 )
 
 router.get('/auth/me',
@@ -33,7 +54,7 @@ UserController.getMe
 //  PATH.ME,
 //  checkAuth,
 //  handleValidationErrors,
-//  UserController.update,
+//  UserController.updateFav,
 //);
 
 //ADMIN

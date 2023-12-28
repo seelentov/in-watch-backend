@@ -1,13 +1,25 @@
 import MovieModel from '../models/Movie.js'
 
 class MovieService{
-  async getOne(id){
-    const movie = await MovieModel.findOne({
-      _id: id,
-    }).catch(err=>{
-      console.log(err)
-      throw new Error('Не удалось получить фильм')
-    })
+  async getOne(id, queries){
+    let movie
+    if(queries.view){
+       movie = await MovieModel.findByIdAndUpdate(
+        id,
+        {
+          $inc: { views: 1, viewsMonth: 1 },
+        },
+        { new: true }
+        ).catch(err=>{
+        throw new Error('Не удалось получить фильм')
+      })
+    }else{
+       movie = await MovieModel.findOne({
+        _id: id,
+      }).catch(err=>{
+        throw new Error('Не удалось получить фильм')
+      })
+    }
 
     return movie
   }
@@ -82,12 +94,11 @@ class MovieService{
         .skip(skip)
         .limit(parseInt(page_limit));
   
-        console.log(movies)
 
       return {
         data: movies,
-        page: page,
-        pages: Math.ceil(totalEntries / page_limit),
+        page: page || 1,
+        pages: Math.ceil(totalEntries / page_limit) || 1,
         count: movies.length,
         entries: totalEntries
       };

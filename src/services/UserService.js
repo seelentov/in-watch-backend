@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import CONFIG from '../config/config.js'
 import PATH from '../config/path.config.js'
+import MovieModel from '../models/Movie.js'
 import UserModel from '../models/User.js'
 
 class UserService{
@@ -18,6 +19,7 @@ class UserService{
         passwordHash: hash,
         avatarUrl,
         role: 'user',
+        userSalt: salt
       })
   
       const userDoc = await doc.save()
@@ -32,7 +34,7 @@ class UserService{
         }
       )
   
-      const { passwordHash, ...userData } = userDoc._doc
+      const { passwordHash, userSalt, ...userData } = userDoc._doc
   
       return { ...userData, token }
   }
@@ -46,14 +48,15 @@ class UserService{
         const error = new Error('Неверный логин или пароль');
         error.status = 400; 
         throw error; 
+
       }
   
       const isValidPass = await bcrypt.compare(
         user.password,
         userDoc._doc.passwordHash
       )
-  
       if (!isValidPass) {
+
         const error = new Error('Неверный логин или пароль');
         error.status = 400; 
         throw error; 
@@ -69,7 +72,7 @@ class UserService{
         }
       )
   
-      const { passwordHash, ...userData } = userDoc._doc
+      const { passwordHash, userSalt, ...userData } = userDoc._doc
   
       return({ ...userData, token })
 
@@ -80,40 +83,102 @@ class UserService{
       const userDoc = await UserModel.findById(userId)
   
       if (!userDoc) {
-        throw new Error('Пользователь не найден')
+        const error = new Error('Пользователь не найден');
+        error.status = 400; 
+        throw error; 
       }
   
-      const { passwordHash, ...userData } = userDoc._doc
+      const { passwordHash, userSalt, ...userData } = userDoc._doc
   
       return userData
   }
   
   
-  //async update (req, res) {
-  //  try {
-  //    const user = await UserModel.findByIdAndUpdate(req.userId, {
-  //      avatarUrl: req.body.avatarUrl,
-  //      login: req.body.login,
-  //    }, {
-  //      new: true
-  //    })
+  async updateFav (action, ids, userId) {
+    let user;
+      if(action === 'add'){
+         user = await UserModel.findByIdAndUpdate(
+          userId,
+          { $addToSet: { favorites: { $each: ids } } },
+          { new: true }
+        )
+    
+        await MovieModel.updateMany(
+          { _id: { $in: ids } },
+          { $inc: { likes: 1 } }
+        )
+      } else {
+         user = await UserModel.findByIdAndUpdate(
+          userId,
+          { $pull: { favorites: { $in: ids } } },
+          { new: true }
+        );
+      
+        await MovieModel.updateMany(
+          { _id: { $in: ids } },
+          { $inc: { likes: -1 } }
+        );
+      }
+      
+      if (!user) {
+        const error = new Error('Пользователь не найден');
+        error.status = 400; 
+        throw error; 
+      }
   
-  //    if (!user) {
-  //      return res.status(404).json({
-  //        message: 'Пользователь не найден',
-  //      })
-  //    }
-  
-  //    const { passwordHash, ...userData } = user._doc
-  
-  //    res.json(userData)
-  //  } catch (err) {
-  //    console.log(err)
-  //    return res.status(500).json({
-  //      message: 'Нет доступа',
-  //    })
-  //  }
-  //}
+      const { passwordHash, userSalt, ...userData } = userDoc._doc
+      return userData
+  }
+
+  async updateInfo (userId, form) {
+
+      const user = await UserModel.findByIdAndUpdate(
+        userId,
+        { 
+          email: form.email,
+          login: form.login 
+        },
+        { new: true }
+      )
+
+      if (!user) {
+        const error = new Error('Пользователь не найден');
+        error.status = 400; 
+        throw error; 
+      }
+          
+      const { passwordHash, userSalt, ...userData } = user._doc
+      return userData
+  }
+
+  async changePass (userId, form) {
+
+    const userDoc = await UserModel.findById(userId)
+
+    if (!userDoc) {
+      const error = new Error('Неверный пароль');
+      error.status = 400; 
+      throw error; 
+    }
+
+    const isValidPass = await bcrypt.compare(
+      form.password,
+      userDoc._doc.passwordHash
+    )
+
+    if (!isValidPass) {
+      const error = new Error('Неверный пароль');
+      error.status = 400; 
+      throw error; 
+    }
+
+    const hash = await bcrypt.hash(form.newPassword, userDoc.userSalt)
+    
+    await UserModel.findByIdAndUpdate(userId,{
+      passwordHash: hash,
+    })
+    
+  }
 }
 
 export default new UserService()
