@@ -3,6 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import CONFIG from './config/config.js'
 import router from './router.js'
+import MovieCron from './cron/MovieCron.js'
 
 mongoose
   .connect(CONFIG.mongooseConnectionString)
@@ -27,3 +28,5 @@ app.listen(CONFIG.port, (err) => {
   }
   return console.log('Server OK');
 });
+
+MovieCron.resetViewsMonth()

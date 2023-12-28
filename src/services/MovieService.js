@@ -103,6 +103,15 @@ class MovieService{
         entries: totalEntries
       };
   }
+
+  async resetViewsMonth() {
+    try {
+      await MovieModel.updateMany({}, { $set: { viewsMonth: 0 } });
+      console.log('Сброс просмотров за месяц выполнен успешно!');
+    } catch (err) {
+      console.error('Ошибка сброса просмотров за месяц:', err);
+    }
+  }
 }
 
 export default new MovieService()
