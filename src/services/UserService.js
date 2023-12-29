@@ -47,7 +47,7 @@ class UserService{
   
       if (!userDoc) {
         const error = new Error('Неверный логин или пароль');
-        error.status = 400; 
+        error.status = 420; 
         throw error; 
 
       }
@@ -59,7 +59,7 @@ class UserService{
       if (!isValidPass) {
 
         const error = new Error('Неверный логин или пароль');
-        error.status = 400; 
+        error.status = 420; 
         throw error; 
       }
   
@@ -85,7 +85,7 @@ class UserService{
   
       if (!userDoc) {
         const error = new Error('Пользователь не найден');
-        error.status = 400; 
+        error.status = 420; 
         throw error; 
       }
   
@@ -123,7 +123,7 @@ class UserService{
       
       if (!user) {
         const error = new Error('Пользователь не найден');
-        error.status = 400; 
+        error.status = 420; 
         throw error; 
       }
   
@@ -144,7 +144,7 @@ class UserService{
 
       if (!user) {
         const error = new Error('Пользователь не найден');
-        error.status = 400; 
+        error.status = 420; 
         throw error; 
       }
           
@@ -158,7 +158,7 @@ class UserService{
 
     if (!userDoc) {
       const error = new Error('Неверный пароль');
-      error.status = 400; 
+      error.status = 420; 
       throw error; 
     }
 
@@ -169,7 +169,7 @@ class UserService{
 
     if (!isValidPass) {
       const error = new Error('Неверный пароль');
-      error.status = 400; 
+      error.status = 420; 
       throw error; 
     }
 
@@ -184,7 +184,7 @@ class UserService{
   async changeAvatarUrl (userId, image) {
     if(image.mimetype !== "image/png"){
       const error = new Error('Файл не является изображением');
-      error.status = 400; 
+      error.status = 420; 
       throw error; 
     }
     const url = await FileService.saveFile(image)
