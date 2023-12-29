@@ -83,13 +83,8 @@ class MovieService{
       if (page && page_limit) {
         skip = (parseInt(page) - 1) * parseInt(page_limit);
       }
-  
-      //const movies = await MovieModel.find(filter)
-      //  .sort(orderFilter)
-      //  .skip(skip)
-      //  .limit(parseInt(page_limit));
 
-           const movies = await MovieModel.find(filter)
+      const movies = await MovieModel.find(filter)
         .sort(orderFilter)
         .skip(skip)
         .limit(parseInt(page_limit));

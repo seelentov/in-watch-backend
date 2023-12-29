@@ -46,6 +46,11 @@ checkAuth,
 UserController.changePass
 )
 
+router.patch('/auth/changeimage',
+checkAuth,
+UserController.changeAvatar
+)
+
 router.get('/auth/me',
 checkAuth, 
 UserController.getMe

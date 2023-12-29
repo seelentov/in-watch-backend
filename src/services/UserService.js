@@ -4,6 +4,7 @@ import CONFIG from '../config/config.js'
 import PATH from '../config/path.config.js'
 import MovieModel from '../models/Movie.js'
 import UserModel from '../models/User.js'
+import FileService from '../services/FileService.js'
 
 class UserService{
   async register(user){
@@ -177,6 +178,22 @@ class UserService{
     await UserModel.findByIdAndUpdate(userId,{
       passwordHash: hash,
     })
+    
+  }
+
+  async changeAvatarUrl (userId, image) {
+    if(image.mimetype !== "image/png"){
+      const error = new Error('Файл не является изображением');
+      error.status = 400; 
+      throw error; 
+    }
+    const url = await FileService.saveFile(image)
+    const userDoc = await UserModel.findByIdAndUpdate(userId,
+      { avatarUrl: url },
+      { new: true }
+      )
+
+    return userDoc
     
   }
 }

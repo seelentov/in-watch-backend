@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import CONFIG from './config/config.js'
 import router from './router.js'
 import MovieCron from './cron/MovieCron.js'
-
+import fileUpload from 'express-fileupload';
 mongoose
   .connect(CONFIG.mongooseConnectionString)
   .then(() => {
@@ -18,6 +18,7 @@ const app = express();
 
 app.use(cors())
 app.use(express.json());
+app.use(fileUpload({}));
 app.use('/api', router);
 
 app.use('/uploads', express.static('uploads'))

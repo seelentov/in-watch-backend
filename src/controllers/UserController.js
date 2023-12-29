@@ -87,6 +87,22 @@ class UserController{
       })
     }
   }
+
+  async changeAvatar (req, res) {
+    try {
+      const image = req.files.image
+      const userId = req.userId
+      
+      const user = await UserService.changeAvatarUrl(userId, image)
+      
+      res.json(user)
+    } catch (err) {
+      console.log(err)
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
+      })
+    }
+  }
 }
 
 export default new UserController()
