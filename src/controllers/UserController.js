@@ -55,6 +55,7 @@ class UserController{
   
   async updateFav (req, res) {
     try {
+    console.log(req.query.action, req.body.ids, req.userId)
       const userId = req.userId
       const action = req.query.action
       const ids = req.body.ids
