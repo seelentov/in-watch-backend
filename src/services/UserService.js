@@ -113,23 +113,28 @@ class UserService{
   async updateFav (action, ids, userId) {
     let user;
       if(action === 'add'){
+        console.log('adding..', ids)
          user = await UserModel.findByIdAndUpdate(
           userId,
           { $addToSet: { favorites: { $each: ids } } },
           { new: true }
         )
-    
+        console.log('added', user)
         await MovieModel.updateMany(
           { _id: { $in: ids } },
           { $inc: { likes: 1 } }
         )
-      } else {
+      } else if(action === 'del') {
+        console.log('deleting...', ids)
          user = await UserModel.findByIdAndUpdate(
           userId,
           { $pull: { favorites: { $in: ids } } },
           { new: true }
         );
       
+
+        console.log('deleted', user)
+
         await MovieModel.updateMany(
           { _id: { $in: ids } },
           { $inc: { likes: -1 } }
