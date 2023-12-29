@@ -112,6 +112,7 @@ class UserService{
   
   async updateFav (action, ids, userId) {
     let user;
+    console.log(action, ids, userId)
       if(action === 'add'){
         console.log('adding..', ids)
          user = await UserModel.findByIdAndUpdate(
