@@ -8,6 +8,7 @@ class FileService{
     const filePath = path.resolve('uploads', fileName)
     image.mv(filePath)
     const serverPath = `/uploads/${fileName}`
+    
     return serverPath
   }
 }
