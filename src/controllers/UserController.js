@@ -38,6 +38,20 @@ class UserController{
     }
   }
   
+  async getFavorites (req, res) {
+    try {
+      const favorites = await UserService.getFavorites(req.userId)
+  
+      res.json(favorites)
+    } catch (err) {
+      console.log(err)
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
+      })
+    }
+  }
+  
+
   
   async updateFav (req, res) {
     try {

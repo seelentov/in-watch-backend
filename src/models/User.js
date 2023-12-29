@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    favorites: [String],
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }],
     userSalt:{
       type: String,
       required: true,

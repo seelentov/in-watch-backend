@@ -51,14 +51,17 @@ const MovieSchema = new mongoose.Schema(
     },
     likes:{
       type: Number,
+      default: 0,
 			required: true,
     },
     views:{
       type: Number,
+      default: 0,
 			required: true,
     },
     viewsMonth:{
       type: Number,
+      default: 0,
 			required: true,
     },
 	},

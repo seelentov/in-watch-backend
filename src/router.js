@@ -32,6 +32,11 @@ checkAuth,
 UserController.updateFav
 )
 
+router.get('/auth/favorite',
+checkAuth, 
+UserController.getFavorites
+)
+
 router.patch('/auth/info',
 updateInfoValidation,
 handleValidationErrors, 
@@ -55,12 +60,6 @@ router.get('/auth/me',
 checkAuth, 
 UserController.getMe
 )
-//app.patch(
-//  PATH.ME,
-//  checkAuth,
-//  handleValidationErrors,
-//  UserController.updateFav,
-//);
 
 //ADMIN
 //router.post('/admin/login',AdminController.login)

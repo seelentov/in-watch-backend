@@ -35,7 +35,7 @@ class UserService{
         }
       )
   
-      const { passwordHash, userSalt, ...userData } = userDoc._doc
+      const { passwordHash, userSalt,favorites,  ...userData } = userDoc._doc
   
       return { ...userData, token }
   }
@@ -73,7 +73,7 @@ class UserService{
         }
       )
   
-      const { passwordHash, userSalt, ...userData } = userDoc._doc
+      const { passwordHash, userSalt,favorites, ...userData } = userDoc._doc
   
       return({ ...userData, token })
 
@@ -89,10 +89,25 @@ class UserService{
         throw error; 
       }
   
-      const { passwordHash, userSalt, ...userData } = userDoc._doc
+      const { passwordHash, userSalt,favorites, ...userData } = userDoc._doc
   
       return userData
   }
+
+  async getFavorites (userId) {
+      
+    const userDoc = await UserModel.findById(userId).populate('favorites')
+
+    if (!userDoc) {
+      const error = new Error('Пользователь не найден');
+      error.status = 420; 
+      throw error; 
+    }
+
+    const { favorites, ...userData } = userDoc._doc
+
+    return favorites
+}
   
   
   async updateFav (action, ids, userId) {
@@ -127,8 +142,8 @@ class UserService{
         throw error; 
       }
   
-      const { passwordHash, userSalt, ...userData } = userDoc._doc
-      return userData
+      const { favorites, ...userData } = user._doc
+      return favorites
   }
 
   async updateInfo (userId, form) {
@@ -148,7 +163,7 @@ class UserService{
         throw error; 
       }
           
-      const { passwordHash, userSalt, ...userData } = user._doc
+      const { passwordHash, userSalt,favorites, ...userData } = user._doc
       return userData
   }
 
