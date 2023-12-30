@@ -27,8 +27,7 @@ class UserController{
   
   async getMe (req, res) {
     try {
-      const user = await UserService.getMe(req.userId)
-  
+      console.log(req.userId)
       res.json(user)
     } catch (err) {
       console.log(err)
@@ -51,6 +50,19 @@ class UserController{
     }
   }
   
+  async getReceit (req, res) {
+    try {
+      const receit = await UserService.getReceit(req.userId)
+  
+      res.json(receit)
+    } catch (err) {
+      console.log(err)
+      return res.status(err.status || 500).json({
+        message: err.message || 'Нет доступа',
+      })
+    }
+  }
+
 
   
   async updateFav (req, res) {

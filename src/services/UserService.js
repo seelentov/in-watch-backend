@@ -108,6 +108,21 @@ class UserService{
 
     return favorites
 }
+
+async getReceit (userId) {
+      
+  const userDoc = await UserModel.findById(userId).populate('receit')
+
+  if (!userDoc) {
+    const error = new Error('Пользователь не найден');
+    error.status = 420; 
+    throw error; 
+  }
+
+  const { receit, ...userData } = userDoc._doc
+
+  return receit
+}
   
   
   async updateFav (action, ids, userId) {

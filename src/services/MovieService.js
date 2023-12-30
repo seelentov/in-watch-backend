@@ -14,11 +14,12 @@ class MovieService{
         ).catch(err=>{
         throw new Error('Не удалось получить фильм')
       })
-      if(userId){
-        await UserModel.findByIdAndUpdate(
-          userId,
-          { $push: { receit: { $each: [id], $position: 0 } } }
-          )
+      if (userId) {
+        const user = await UserModel.findById(userId);
+        if (user && !user.receit.includes(id)) {
+          user.receit.unshift(id);
+          await user.save();
+        }
       }
     }else{
        movie = await MovieModel.findOne({

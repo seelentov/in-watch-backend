@@ -37,6 +37,11 @@ checkAuth,
 UserController.getFavorites
 )
 
+router.get('/auth/receit',
+checkAuth, 
+UserController.getReceit
+)
+
 router.patch('/auth/info',
 updateInfoValidation,
 handleValidationErrors, 
