@@ -27,7 +27,8 @@ class UserController{
   
   async getMe (req, res) {
     try {
-      console.log(req.userId)
+      const user = await UserService.getMe(req.userId)
+
       res.json(user)
     } catch (err) {
       console.log(err)
@@ -67,7 +68,6 @@ class UserController{
   
   async updateFav (req, res) {
     try {
-      console.log('BODY!', req.body)
       const userId = req.userId
       const action = req.query.action
       const ids = req.body.ids

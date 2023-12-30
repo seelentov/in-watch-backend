@@ -80,7 +80,6 @@ class UserService{
   }
   
   async getMe (userId) {
-      
       const userDoc = await UserModel.findById(userId)
   
       if (!userDoc) {
