@@ -16,8 +16,18 @@ class MovieService{
       })
       if (userId) {
         const user = await UserModel.findById(userId);
-        if (user && !user.receit.includes(id)) {
+        if (user) {
+          const index = user.receit.indexOf(id);
+          if (index !== -1) {
+            user.receit.splice(index, 1);
+          }
+      
           user.receit.unshift(id);
+      
+          if (user.receit.length > 5) {
+            user.receit = user.receit.slice(0, 5);
+          }
+      
           await user.save();
         }
       }
