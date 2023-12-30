@@ -1,9 +1,10 @@
 import MovieModel from '../models/Movie.js'
+import UserModel from '../models/User.js'
 
 class MovieService{
-  async getOne(id, queries){
+  async getOne(id, view, userId){
     let movie
-    if(queries.view){
+    if(view){
        movie = await MovieModel.findByIdAndUpdate(
         id,
         {
@@ -13,6 +14,12 @@ class MovieService{
         ).catch(err=>{
         throw new Error('Не удалось получить фильм')
       })
+      if(userId){
+        await UserModel.findByIdAndUpdate(
+          userId,
+          { $push: { receit: { $each: [id], $position: 0 } } }
+          )
+      }
     }else{
        movie = await MovieModel.findOne({
         _id: id,

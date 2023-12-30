@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }],
+    receit: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }],
     userSalt:{
       type: String,
       required: true,

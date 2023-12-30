@@ -5,7 +5,8 @@ class MovieController{
     try {
       const view = req.query.view
       const id = req.params.id
-      const movie = await MovieService.getOne(id, req.query)
+      const userId = req.userId || ''
+      const movie = await MovieService.getOne(id, view, userId)
       res.json(movie)
     } catch (err) {
       console.log(err)

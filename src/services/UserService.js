@@ -115,7 +115,7 @@ class UserService{
       if(action === 'add'){
          user = await UserModel.findByIdAndUpdate(
           userId,
-          { $addToSet: { favorites: { $each: ids } } },
+          { $push: { favorites: { $each: ids, $position: 0 } } },
           { new: true }
         )
         await MovieModel.updateMany(
