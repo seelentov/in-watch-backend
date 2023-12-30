@@ -23,11 +23,6 @@ class MovieService{
           }
       
           user.receit.unshift(id);
-      
-          if (user.receit.length > 5) {
-            user.receit = user.receit.slice(0, 5);
-          }
-      
           await user.save();
         }
       }
