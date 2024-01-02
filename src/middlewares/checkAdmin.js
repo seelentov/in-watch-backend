@@ -7,8 +7,12 @@ export default (req, res, next) => {
 		try {
 			const decoded = jwt.verify(token, CONFIG.secretJWT)
 
-			req.userId = decoded._id
-
+      if(decoded.key !== CONFIG.admin.secretKey){
+        const error = new Error('Нет доступа');
+        error.status = 401; 
+        throw error; 
+      }
+			req.adminKey = decoded.key
 			next()
 		} catch (error) {
 			console.log(error)
@@ -17,10 +21,8 @@ export default (req, res, next) => {
 			})
 		}
 	} else {
-    console.log(error)
 		return res.status(403).json({
 			message: 'Нет доступа',
 		})
-
 	}
 }

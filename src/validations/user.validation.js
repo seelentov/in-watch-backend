@@ -14,7 +14,9 @@ export const registerValidation = [
 	body('password')
 		.isLength({ min: 6 })
 		.withMessage('Пароль должен быть более 5-ти символов'),
-	body('login').isLength({ min: 3 }).withMessage('Введите корректный логин'),
+	body('login')
+    .isLength({ min: 3 })
+    .withMessage('Введите корректный логин'),
 	body('avatarUrl')
 		.optional()
 ]

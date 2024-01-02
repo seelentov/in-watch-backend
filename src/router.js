@@ -1,7 +1,9 @@
 import MovieController from './controllers/MovieController.js'
 import UserController from './controllers/UserController.js'
+import AdminController from './controllers/AdminController.js'
 
 import checkAuth from './middlewares/checkAuth.js'
+import checkAdmin from './middlewares/checkAdmin.js'
 import handleValidationErrors from './middlewares/handleValidationErrors.js'
 import {
   loginValidation,
@@ -9,6 +11,11 @@ import {
   updateInfoValidation,
   changePassValidation
 } from './validations/user.validation.js'
+
+
+import {
+  postMovieValidation
+} from './validations/movie.validation.js'
 
 import Router from 'express'
 
@@ -67,10 +74,32 @@ UserController.getMe
 )
 
 //ADMIN
-//router.post('/admin/login',AdminController.login)
+router.post('/admin/login',
+AdminController.login
+)
 
 //MOVIES
-router.get('/movies', MovieController.getAllbyFilter);
-router.get('/movies/:id', MovieController.getOne );
+router.get('/movies', 
+MovieController.getAllbyFilter
+);
+router.get('/movies/:id', 
+MovieController.getOne 
+);
+router.post('/movies/',
+postMovieValidation, 
+handleValidationErrors, 
+checkAdmin, 
+MovieController.getOne 
+);
+router.patch('/movies/:id',
+postMovieValidation, 
+handleValidationErrors, 
+checkAdmin, 
+MovieController.getOne 
+);
+router.delete('/movies/:id',
+checkAdmin, 
+MovieController.getOne 
+);
 
 export default router

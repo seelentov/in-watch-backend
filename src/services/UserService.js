@@ -186,7 +186,7 @@ async getReceit (userId) {
 
     if (!userDoc) {
       const error = new Error('Неверный пароль');
-      error.status = 420; 
+      error.status = 403; 
       throw error; 
     }
 
@@ -197,7 +197,7 @@ async getReceit (userId) {
 
     if (!isValidPass) {
       const error = new Error('Неверный пароль');
-      error.status = 420; 
+      error.status = 403; 
       throw error; 
     }
 
